@@ -2,17 +2,15 @@ package fgcu.smartclock
 
 import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
 import android.widget.Toast
-import com.hanks.htextview.fall.FallText
 import com.hanks.htextview.fall.FallTextView
 import fgcu.smartclock.interfaces.IPApiService
+import fgcu.smartclock.models.IPApiModel
 import fgcu.smartclock.utils.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import java.util.Timer
 
 /**
  * Skeleton of an Android Things activity.

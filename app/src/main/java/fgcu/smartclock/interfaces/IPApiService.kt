@@ -1,6 +1,6 @@
 package fgcu.smartclock.interfaces
 
-import fgcu.smartclock.IPApiModel
+import fgcu.smartclock.models.IPApiModel
 import retrofit2.Call
 import retrofit2.http.GET
 

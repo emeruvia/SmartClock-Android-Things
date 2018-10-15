@@ -3,7 +3,7 @@ package fgcu.smartclock.models
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class Temperature(
+data class TemperatureModel(
   @SerializedName("temp")
   val currentTemperature: Double,
   @SerializedName("temp_max")

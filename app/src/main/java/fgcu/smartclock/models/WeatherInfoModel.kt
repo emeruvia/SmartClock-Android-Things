@@ -3,9 +3,9 @@ package fgcu.smartclock.models
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class WeatherInfo(
+data class WeatherInfoModel(
   @SerializedName("weather")
-  val weatherCondition: WeatherCondition,
+  val weatherCondition: WeatherConditionModel,
   @SerializedName("main")
-  val temperature: Temperature
+  val temperature: TemperatureModel
 ) : Serializable
