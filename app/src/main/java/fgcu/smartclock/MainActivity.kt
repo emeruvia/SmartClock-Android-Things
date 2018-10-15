@@ -2,12 +2,17 @@ package fgcu.smartclock
 
 import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
+import android.widget.Toast
+import com.hanks.htextview.fall.FallText
+import com.hanks.htextview.fall.FallTextView
 import fgcu.smartclock.interfaces.IPApiService
 import fgcu.smartclock.utils.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
-import android.widget.Toast
 import retrofit2.Response
+import retrofit2.Retrofit
+import java.util.Timer
 
 /**
  * Skeleton of an Android Things activity.
@@ -31,44 +36,42 @@ import retrofit2.Response
  */
 class MainActivity : Activity() {
 
-  private val ipApiUrl: String = " https://ipapi.co"
+  private val BASE_URL: String = " https://ipapi.co"
+  private lateinit var fallTextView: FallTextView
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-
-
-    fetchIpData()
+    fallTextView = findViewById(R.id.fallTextView)
+    //TODO get rid of method, used for testing purposes
+    fetchIpData()asdf
   }
 
   fun fetchIpData() {
-//    val retrofit: Retrofit = new Retro
-    val retrofit = RetrofitClient().buildClient(ipApiUrl)
-    val ipApiService: IPApiService = retrofit.create(IPApiService::class.java)
-    val ipApiCall = ipApiService.ipApiClient("69.88.190.12","json")
-
-    ipApiCall.enqueue(object: Callback<IPApi> {
+    val retrofit: Retrofit = RetrofitClient().buildClient(BASE_URL)
+    val service: IPApiService = retrofit.create(IPApiService::class.java)
+    val call: Call<IPApiModel> = service.ipApiService()
+    call.enqueue(object: Callback<IPApiModel> {
       override fun onFailure(
-        call: Call<IPApi>,
+        call: Call<IPApiModel>,
         t: Throwable
       ) {
-        println("This shit does not work")
+        println("Failure to fetch data for location")
       }
 
       override fun onResponse(
-        call: Call<IPApi>,
-        response: Response<IPApi>
+        call: Call<IPApiModel>,
+        response: Response<IPApiModel>
       ) {
-        println("This works")
-        var ip: IPApi = response.body()!!
-        println(ip)
-        println(ip.city)
-        println(ip.country)
-        println(ip.ip)
-        println(ip.latitude)
-        println(ip.longitude)
-        println(ip.postal)
-        println(ip.region)
+        println("Connection Sucessful")
+        Toast.makeText(applicationContext, response.body()!!.zip, Toast.LENGTH_LONG).show()
+        val model
+        println(response.body()!!.country)
+        println(response.body()!!.city)
+        println(response.body()!!.ipAdress)
+        println(response.body()!!.zip)
+        println(response.body())
+        fallTextView.animateText("Your city is: " + response.body()!!.city)
       }
 
     })
