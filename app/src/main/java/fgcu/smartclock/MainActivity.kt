@@ -36,7 +36,7 @@ import java.util.Timer
  */
 class MainActivity : Activity() {
 
-  private val BASE_URL: String = " https://ipapi.co"
+  private val BASE_URL: String = " http://ip-api.com"
   private lateinit var fallTextView: FallTextView
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +44,7 @@ class MainActivity : Activity() {
     setContentView(R.layout.activity_main)
     fallTextView = findViewById(R.id.fallTextView)
     //TODO get rid of method, used for testing purposes
-    fetchIpData()asdf
+    fetchIpData()
   }
 
   fun fetchIpData() {
@@ -65,13 +65,12 @@ class MainActivity : Activity() {
       ) {
         println("Connection Sucessful")
         Toast.makeText(applicationContext, response.body()!!.zip, Toast.LENGTH_LONG).show()
-        val model
-        println(response.body()!!.country)
-        println(response.body()!!.city)
-        println(response.body()!!.ipAdress)
-        println(response.body()!!.zip)
-        println(response.body())
-        fallTextView.animateText("Your city is: " + response.body()!!.city)
+        val model: IPApiModel = response.body()!!
+        println(model.country)
+        println(model.city)
+        println(model.ipAdress)
+        println(model.zip)
+        fallTextView.animateText("Your city is: " + model.city)
       }
 
     })
