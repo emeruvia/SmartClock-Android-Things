@@ -1,9 +1,8 @@
 package test.emg.testapp.interfaces
 
-import test.emg.testapp.models.WeatherInfoModel
+import test.emg.testapp.models.WeatherModel
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 import test.emg.testapp.models.IPApiModel
 
@@ -15,5 +14,5 @@ interface RetrofitService {
   fun weatherService(
     @Query("q") city: String,
     @Query("appid") api: String
-  ): Call<WeatherInfoModel>
+  ): Call<WeatherModel>
 }

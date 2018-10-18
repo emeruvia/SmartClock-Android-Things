@@ -11,8 +11,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import test.emg.testapp.interfaces.RetrofitService
 import test.emg.testapp.models.IPApiModel
-import test.emg.testapp.models.WeatherInfoModel
+import test.emg.testapp.models.WeatherModel
 import test.emg.testapp.utils.RetrofitClient
+import test.emg.testapp.utils.WeatherClient
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,25 +62,20 @@ class MainActivity : AppCompatActivity() {
   }
 
   fun fetchWeatherData(city: String) {
-    val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(resources.getString(R.string.weather_base_url))
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    val service: RetrofitService = retrofit.create(RetrofitService::class.java)
-
-    val call: Call<WeatherInfoModel> =
-      service.weatherService(city, resources.getString(R.string.open_weather_api))
-    call.enqueue(object : Callback<WeatherInfoModel> {
+    val service = WeatherClient().createWeatherClient()
+    val call: Call<WeatherModel> =
+      service!!.weatherService(city, resources.getString(R.string.open_weather_api))
+    call.enqueue(object : Callback<WeatherModel> {
       override fun onFailure(
-        call: Call<WeatherInfoModel>,
+        call: Call<WeatherModel>,
         t: Throwable
       ) {
         println(t.message)
       }
 
       override fun onResponse(
-        call: Call<WeatherInfoModel>,
-        response: Response<WeatherInfoModel>
+        call: Call<WeatherModel>,
+        response: Response<WeatherModel>
       ) {
         println("Works")
         println(response.message())
