@@ -13,7 +13,6 @@ import test.emg.testapp.utils.RetrofitClient
 
 class MainActivity : AppCompatActivity() {
 
-  private val BASE_URL: String = "http://ip-api.com/"
   private lateinit var fallTextView: FallTextView
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,14 +22,12 @@ class MainActivity : AppCompatActivity() {
 
   }
 
-
   fun updateButton(view: View) {
     fetchIpData()
   }
 
-
   fun fetchIpData() {
-    val retrofit = RetrofitClient().buildClient(BASE_URL)
+    val retrofit = RetrofitClient().buildClient(resources.getString(R.string.ip_api_base_url))
     val service: RetrofitService = retrofit.create(RetrofitService::class.java)
     val call = service.ipApiService()
     call.enqueue(object : Callback<IPApiModel> {

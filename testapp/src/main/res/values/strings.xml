@@ -1,3 +1,5 @@
 <resources>
   <string name="app_name">TestApp</string>
+  <string name="ip_api_base_url">http://ip-api.com/</string>
+  <string name="weather_base_url">api.openweathermap.org</string>
 </resources>
