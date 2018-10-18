@@ -7,8 +7,10 @@ import com.hanks.htextview.fall.FallTextView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
 import test.emg.testapp.interfaces.RetrofitService
 import test.emg.testapp.models.IPApiModel
+import test.emg.testapp.models.WeatherInfoModel
 import test.emg.testapp.utils.RetrofitClient
 
 class MainActivity : AppCompatActivity() {
@@ -23,19 +25,19 @@ class MainActivity : AppCompatActivity() {
   }
 
   fun updateButton(view: View) {
-    fetchIpData()
+    fetchWeatherData("miami")
   }
 
   fun fetchIpData() {
     val retrofit = RetrofitClient().buildClient(resources.getString(R.string.ip_api_base_url))
-    val service: RetrofitService = retrofit.create(RetrofitService::class.java)
-    val call = service.ipApiService()
+    val service = retrofit.create(RetrofitService::class.java)
+    val call = service!!.ipApiService()
     call.enqueue(object : Callback<IPApiModel> {
       override fun onResponse(
         call: Call<IPApiModel>,
         response: Response<IPApiModel>
       ) {
-        var success: IPApiModel = response.body()!!
+        val success: IPApiModel = response.body()!!
         fallTextView.animateText("Based on your ip, your citi is: " + success.city);
         println("Success")
         println(response.body()!!.country)
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         println(response.body()!!.lon)
         println(response.body()!!.lat)
         println(response.body()!!.zip)
+        fetchWeatherData(success.city)
       }
 
       override fun onFailure(
@@ -54,5 +57,29 @@ class MainActivity : AppCompatActivity() {
       }
 
     });
+  }
+
+  fun fetchWeatherData(city: String) {
+    println("City value being passed" + city)
+    val retrofit = RetrofitClient().buildClient(resources.getString(R.string.weather_base_url))
+    val service = retrofit.create(RetrofitService::class.java)
+    val call: Call<List<WeatherInfoModel>> = service.weatherService(city, resources.getString(R.string.open_weather_api))
+    call.enqueue(object: Callback<List<WeatherInfoModel>> {
+      override fun onResponse(
+        call: Call<List<WeatherInfoModel>>,
+        response: Response<List<WeatherInfoModel>>
+      ) {
+        println("Success")
+        println(response.raw())
+      }
+
+      override fun onFailure(
+        call: Call<List<WeatherInfoModel>>,
+        t: Throwable
+      ) {
+        println(t.toString())
+      }
+
+    })
   }
 }

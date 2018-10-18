@@ -19,4 +19,4 @@ data class IPApiModel(
   val regionName: String,
   val timezone: String,
   val zip: String
-) : Serializable
+)
