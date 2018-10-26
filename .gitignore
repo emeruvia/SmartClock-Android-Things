@@ -5,9 +5,11 @@
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
+/.idea/misc.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 google-services.json
 google_api.xml
+apis.xml
