@@ -10,10 +10,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import test.emg.testapp.interfaces.RetrofitService
 import test.emg.testapp.models.IPApiModel
-import test.emg.testapp.models.WeatherInfoModel
+import test.emg.testapp.models.WeatherModel
 import test.emg.testapp.utils.RetrofitClient
+import test.emg.testapp.utils.WeatherClient
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   fun updateButton(view: View) {
-    fetchWeatherData("miami")
+    fetchIpData()
   }
 
   fun fetchIpData() {
@@ -63,30 +65,29 @@ class MainActivity : AppCompatActivity() {
   }
 
   fun fetchWeatherData(city: String) {
-    Log.d("MainActivity", "Got to fetchWeatherData")
-    println("City value being passed" + city)
-    val retrofit = RetrofitClient().buildClient(resources.getString(R.string.weather_base_url))
-    val service = retrofit.create(RetrofitService::class.java)
-    val call: Call<WeatherInfoModel> = service.weatherService(city, resources.getString(R.string.open_weather_api))
-    call.enqueue(object: Callback<WeatherInfoModel> {
-      override fun onResponse(
-        call: Call<WeatherInfoModel>,
-        response: Response<WeatherInfoModel>
-      ) {
-        Log.d("MainActivity", "Success got this data: "+ response.body())
-
-
-        println("Success")
-
-        println(response.raw())
-
-      }
-
+    val service = WeatherClient().createWeatherClient()
+    val call: Call<WeatherModel> =
+      service!!.weatherService(city, resources.getString(R.string.open_weather_api))
+    call.enqueue(object : Callback<WeatherModel> {
       override fun onFailure(
-        call: Call<WeatherInfoModel>,
+        call: Call<WeatherModel>,
         t: Throwable
       ) {
-        println(t.toString())
+        println(t.message)
+      }
+
+      override fun onResponse(
+        call: Call<WeatherModel>,
+        response: Response<WeatherModel>
+      ) {
+        println("Works")
+        println(response.message())
+        println(response.raw())
+        println(response.body()!!.city)
+        println(response.body()!!.date)
+        println(response.body()!!.temperature.currentTemperature)
+        println(response.body()!!.weatherCondition.get(0).weatherName)
+        println(response.body()!!.weatherCondition.get(0).weatherDescription)
       }
 
     })
