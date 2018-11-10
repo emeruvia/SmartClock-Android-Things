@@ -2,6 +2,8 @@ package test.emg.testapp
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.View
 import com.hanks.htextview.fall.FallTextView
 import retrofit2.Call
@@ -16,6 +18,7 @@ import test.emg.testapp.utils.RetrofitClient
 class MainActivity : AppCompatActivity() {
 
   private lateinit var fallTextView: FallTextView
+  private lateinit var handler : Handler
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -60,21 +63,27 @@ class MainActivity : AppCompatActivity() {
   }
 
   fun fetchWeatherData(city: String) {
+    Log.d("MainActivity", "Got to fetchWeatherData")
     println("City value being passed" + city)
     val retrofit = RetrofitClient().buildClient(resources.getString(R.string.weather_base_url))
     val service = retrofit.create(RetrofitService::class.java)
-    val call: Call<List<WeatherInfoModel>> = service.weatherService(city, resources.getString(R.string.open_weather_api))
-    call.enqueue(object: Callback<List<WeatherInfoModel>> {
+    val call: Call<WeatherInfoModel> = service.weatherService(city, resources.getString(R.string.open_weather_api))
+    call.enqueue(object: Callback<WeatherInfoModel> {
       override fun onResponse(
-        call: Call<List<WeatherInfoModel>>,
-        response: Response<List<WeatherInfoModel>>
+        call: Call<WeatherInfoModel>,
+        response: Response<WeatherInfoModel>
       ) {
+        Log.d("MainActivity", "Success got this data: "+ response.body())
+
+
         println("Success")
+
         println(response.raw())
+
       }
 
       override fun onFailure(
-        call: Call<List<WeatherInfoModel>>,
+        call: Call<WeatherInfoModel>,
         t: Throwable
       ) {
         println(t.toString())

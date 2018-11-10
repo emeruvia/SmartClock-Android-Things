@@ -15,5 +15,5 @@ interface RetrofitService {
   fun weatherService(
     @Query("q") city: String,
     @Query("appid") apiKey: String
-  ): Call<List<WeatherInfoModel>>
+  ): Call<WeatherInfoModel>
 }
