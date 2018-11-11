@@ -20,6 +20,10 @@ import retrofit2.Retrofit
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
+import java.util.Locale
+import java.util.TimeZone
 
 /**
  * Skeleton of an Android Things activity.
@@ -58,6 +62,8 @@ class MainActivity : Activity(){
   private var locationHandler = Handler()
   private var weahterHandler = Handler()
   private var firebaseHandler = Handler()
+  private lateinit var  time : Date
+  private var hour  = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -73,22 +79,42 @@ class MainActivity : Activity(){
     dateTextView = findViewById(R.id.date_textview)
     cityTextView = findViewById(R.id.city_textview)
 
+   manageTime()
+  }
+
+
+  fun manageTime(){
+    time = Calendar.getInstance().time
+    hour = Integer.valueOf(SimpleDateFormat("HH").format(time)) - 5
+    minuteTextview.animateText(SimpleDateFormat("mm").format(time))
+    hourTextView.animateText((hour%12).toString())
+    dateTextView.text = SimpleDateFormat("MM-dd-yyyy").format(time)
+    meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
     timeHandler.postDelayed(object : Runnable {
       override fun run() {
-        var minute = ""
-        var seconds = SimpleDateFormat("ss").format(Calendar.getInstance().time)
-        if(seconds == "00"){
-          minute = SimpleDateFormat("mm").format(Calendar.getInstance().time)
-          minuteTextview.animateText(minute)}
-        if(minute == ("00"))
-          hourTextView.animateText(SimpleDateFormat("HH").format(Calendar.getInstance().time))
-      timeHandler.postDelayed(this,1000)
-    }
+        updateTime()
+        timeHandler.postDelayed(this,1000)
+      }
     },1000)
-
 
   }
 
+  fun updateTime(){
+    time = Calendar.getInstance().time
+    var minute = ""
+    val seconds = SimpleDateFormat("ss").format(time)
+    if(seconds == "00"){
+      minute = SimpleDateFormat("mm").format(time)
+      minuteTextview.animateText(minute)
+    }
+    if(minute == ("00")) {
+      hour = Integer.valueOf(SimpleDateFormat("HH").format(time)) - 5
+      hourTextView.animateText((hour%12).toString())
+    }
+    meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
+    if(hour == 0)
+      dateTextView.text = SimpleDateFormat("MM-dd-yyyy").format(time)
+  }
 
   fun fetchIpData() {
     val retrofit: Retrofit = RetrofitClient().buildClient(BASE_URL)

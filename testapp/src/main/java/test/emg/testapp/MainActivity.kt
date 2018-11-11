@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         call: Call<WeatherModel>,
         t: Throwable
       ) {
+        call.enqueue(this)
         println(t.message)
       }
 
