@@ -57,7 +57,6 @@
         android:layout_height="100dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="68dp"
-        android:background="#49b4cc"
         app:layout_constraintBottom_toTopOf="@+id/weather_status_textview"
         app:layout_constraintEnd_toEndOf="@+id/weather_background_imageview"
         app:layout_constraintHorizontal_bias="0.503"

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SmartClock</string>
+    <string name="ip_api_base_url">http://ip-api.com</string>
+    <string name="weather_base_url">http://api.openweathermap.org</string>
 </resources>
