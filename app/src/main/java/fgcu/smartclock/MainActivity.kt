@@ -1,6 +1,8 @@
 package fgcu.smartclock
 
 import android.app.Activity
+import android.media.MediaPlayer.OnCompletionListener
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +10,10 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.storage.FirebaseStorage
 import com.hanks.htextview.fall.FallTextView
 import com.squareup.picasso.Picasso
 import fgcu.smartclock.interfaces.RetrofitService
@@ -50,7 +56,7 @@ import java.util.TimeZone
  */
 class MainActivity : Activity() {
 
-  private val BASE_URL: String = " http://ip-api.com"
+
   private lateinit var hourTextView: FallTextView
   private lateinit var minuteTextview: FallTextView
   private lateinit var meridiemTextview: TextView
@@ -60,6 +66,7 @@ class MainActivity : Activity() {
   private lateinit var weatherRangeTextView: TextView
   private lateinit var dateTextView: TextView
   private lateinit var cityTextView: TextView
+  private lateinit var backgroundImageView: ImageView
   private var timeHandler = Handler()
   private var weatherHandler = Handler()
   private var firebaseHandler = Handler()
@@ -80,9 +87,26 @@ class MainActivity : Activity() {
     weatherRangeTextView = findViewById(R.id.temp_range_textview)
     dateTextView = findViewById(R.id.date_textview)
     cityTextView = findViewById(R.id.city_textview)
+    backgroundImageView = findViewById(R.id.clock_background_imageview)
 
     manageTime()
     fetchIpData()
+    var storage = FirebaseStorage.getInstance().reference
+
+    storage.child("image_1.jpg").
+       downloadUrl.addOnCompleteListener {
+          Picasso.get()
+            .load(it.result).centerCrop()
+            .resize(backgroundImageView.measuredWidth,backgroundImageView.measuredHeight)
+            .into(backgroundImageView) }
+
+
+
+
+
+
+    Log.d("OnCreate", "Location :" + storage.child("fall_1_image.jpg").path)
+
 
   }
 
@@ -183,7 +207,7 @@ class MainActivity : Activity() {
         .load(response.body()!!.weatherCondition.get(0).weatherIcon)
         .into(weatherImageView)
     weatherStatusTextView.text = response.body()!!.weatherCondition.get(0)
-        .weatherName
+        .weatherDescription
 
     val currentTemp = (response.body()!!.temperature.currentTemperature - 273.15) * 1.8 + 32
     val highTemp = (response.body()!!.temperature.highTemperature - 273.15) * 1.8 + 32
