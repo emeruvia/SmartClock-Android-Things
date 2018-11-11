@@ -2,6 +2,8 @@ package test.emg.testapp
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.View
 import com.hanks.htextview.fall.FallTextView
 import retrofit2.Call
@@ -18,6 +20,7 @@ import test.emg.testapp.utils.WeatherClient
 class MainActivity : AppCompatActivity() {
 
   private lateinit var fallTextView: FallTextView
+  private lateinit var handler : Handler
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -70,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         call: Call<WeatherModel>,
         t: Throwable
       ) {
+        call.enqueue(this)
         println(t.message)
       }
 

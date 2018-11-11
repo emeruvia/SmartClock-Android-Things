@@ -4,17 +4,189 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteY="89dp"
+    >
+    <ImageView
+        android:id="@+id/clock_background_imageview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e7bfbf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        />
 
-    <com.hanks.htextview.fall.FallTextView
-        android:textSize="100sp"
-        android:id="@+id/fallTextView"
+    <ImageView
+        android:id="@+id/weather_background_imageview"
+        android:layout_width="360dp"
+        android:layout_height="400dp"
+        android:layout_marginBottom="82dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="133dp"
+        android:background="@drawable/round_square_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/time_background_imageview"
+        app:layout_constraintHorizontal_bias="0.34"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.673"
+        />
+
+    <ImageView
+        android:id="@+id/time_background_imageview"
+        android:layout_width="360dp"
+        android:layout_height="400dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="133dp"
+        android:background="@drawable/round_square_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/weather_background_imageview"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        />
+
+    <ImageView
+        android:id="@+id/weather_icon_imageview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="68dp"
+        app:layout_constraintBottom_toTopOf="@+id/weather_status_textview"
+        app:layout_constraintEnd_toEndOf="@+id/weather_background_imageview"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="@+id/weather_background_imageview"
+        app:layout_constraintTop_toTopOf="@+id/weather_background_imageview"
+        />
+
+    <TextView
+        android:id="@+id/weather_status_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginBottom="20dp"
+        android:text="Cloudy"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toTopOf="@+id/current_temp_textview"
+        app:layout_constraintEnd_toEndOf="@+id/weather_background_imageview"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="@+id/weather_background_imageview"
+        />
+
+    <TextView
+        android:id="@+id/current_temp_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:textSize="28sp"
+        android:text="Temp: 76 F"
+        app:layout_constraintBottom_toTopOf="@+id/temp_range_textview"
+        app:layout_constraintEnd_toEndOf="@+id/weather_background_imageview"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="@+id/weather_background_imageview"
+        />
+
+    <TextView
+        android:id="@+id/temp_range_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Hi: 90 F    Low:70 F"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/weather_background_imageview"
+        app:layout_constraintEnd_toEndOf="@+id/weather_background_imageview"
+        app:layout_constraintHorizontal_bias="0.537"
+        app:layout_constraintStart_toStartOf="@+id/weather_background_imageview"
+        />
+
+    <TextView
+        android:id="@+id/date_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="November 20, 2018"
+        android:textAlignment="center"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="@+id/time_background_imageview"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="@+id/time_background_imageview"
+        app:layout_constraintTop_toBottomOf="@+id/colon_textview"
+        />
+
+    <TextView
+        android:id="@+id/city_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:text="Fort Myers, FL"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_background_imageview"
+        />
+
+    <com.hanks.htextview.fall.FallTextView
+        android:id="@+id/hour_fallTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="12"
+        android:textSize="92sp"
+        app:layout_constraintBottom_toTopOf="@+id/date_textview"
+        app:layout_constraintEnd_toStartOf="@+id/colon_textview"
+        app:layout_constraintHorizontal_bias="0.615"
+        app:layout_constraintStart_toStartOf="@+id/time_background_imageview"
+        app:layout_constraintTop_toTopOf="@+id/time_background_imageview"
+        app:layout_constraintVertical_bias="0.746"
+        />
+
+    <TextView
+        android:id="@+id/colon_textview"
+        android:layout_width="14dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="120dp"
+        android:text=":"
+        android:textSize="64sp"
+        app:layout_constraintEnd_toStartOf="@+id/minute_fallTextView"
+        app:layout_constraintTop_toTopOf="@+id/time_background_imageview"
+        />
+
+    <com.hanks.htextview.fall.FallTextView
+        android:id="@+id/minute_fallTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="00"
+        android:textSize="92sp"
+        app:layout_constraintBottom_toTopOf="@+id/date_textview"
+        app:layout_constraintEnd_toStartOf="@+id/meridiem_textview"
+        app:layout_constraintTop_toTopOf="@+id/time_background_imageview"
+        app:layout_constraintVertical_bias="0.746"
+        />
+
+    <TextView
+        android:id="@+id/meridiem_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="8dp"
+        android:text="a.m."
+        android:textSize="32sp"
+        app:layout_constraintBottom_toTopOf="@+id/date_textview"
+        app:layout_constraintEnd_toEndOf="@+id/time_background_imageview"
+        />
 
 </android.support.constraint.ConstraintLayout>

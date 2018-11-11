@@ -1,10 +1,10 @@
-package test.emg.testapp.interfaces
+package fgcu.smartclock.interfaces
 
-import test.emg.testapp.models.WeatherModel
+import fgcu.smartclock.models.IPApiModel
+import fgcu.smartclock.models.WeatherModel
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
-import test.emg.testapp.models.IPApiModel
 
 interface RetrofitService {
   @GET("/json")

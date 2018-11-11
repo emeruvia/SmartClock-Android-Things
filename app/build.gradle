@@ -7,7 +7,7 @@ android {
   compileSdkVersion 27
   defaultConfig {
     applicationId "fgcu.smartclock"
-    minSdkVersion 24
+    minSdkVersion 26
     targetSdkVersion 27
     versionCode 1
     versionName "1.0"
@@ -24,6 +24,7 @@ android {
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
   implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+  implementation 'com.google.firebase:firebase-storage:16.0.4'
   implementation 'com.google.firebase:firebase-core:16.0.4'
   implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
   implementation 'com.squareup.retrofit2:retrofit:2.4.0'
@@ -43,6 +44,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   compileOnly 'com.google.android.things:androidthings:+'
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+  implementation 'com.squareup.picasso:picasso:2.71828'
 }
 
 apply plugin: 'com.google.gms.google-services'
