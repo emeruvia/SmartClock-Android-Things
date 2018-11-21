@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.hanks.htextview.fall.FallTextView
 import com.squareup.picasso.Picasso
 import fgcu.smartclock.interfaces.RetrofitService
@@ -67,12 +68,14 @@ class MainActivity : Activity() {
   private lateinit var dateTextView: TextView
   private lateinit var cityTextView: TextView
   private lateinit var backgroundImageView: ImageView
+  private lateinit var storage : StorageReference
   private var timeHandler = Handler()
   private var weatherHandler = Handler()
   private var firebaseHandler = Handler()
   private lateinit var time: Date
   private var hour = 0
   private var hourGMT = 0
+
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -88,26 +91,31 @@ class MainActivity : Activity() {
     dateTextView = findViewById(R.id.date_textview)
     cityTextView = findViewById(R.id.city_textview)
     backgroundImageView = findViewById(R.id.clock_background_imageview)
+    storage = FirebaseStorage.getInstance().reference
 
     manageTime()
     fetchIpData()
-    var storage = FirebaseStorage.getInstance().reference
-
-    storage.child("image_1.jpg").
-       downloadUrl.addOnCompleteListener {
-          Picasso.get()
-            .load(it.result).centerCrop()
-            .resize(backgroundImageView.measuredWidth,backgroundImageView.measuredHeight)
-            .into(backgroundImageView) }
-
-
-
-
-
-
     Log.d("OnCreate", "Location :" + storage.child("fall_1_image.jpg").path)
+  }
 
+  fun getBackground(){
+    var baseImageFileName = "image_"
+    var imageFileCount = 1
+    var fileTypeName = ".jpg"
 
+    firebaseHandler.postDelayed(object : Runnable {
+      override fun run() {
+        storage.child(baseImageFileName+imageFileCount%6+fileTypeName).
+            downloadUrl.addOnCompleteListener {
+          Picasso.get()
+              .load(it.result).centerCrop()
+              .resize(backgroundImageView.measuredWidth,backgroundImageView.measuredHeight)
+              .into(backgroundImageView)
+              imageFileCount++
+        }
+        weatherHandler.postDelayed(this, 30000)
+      }
+    }, 30000)
   }
 
   fun manageTime() {
@@ -159,6 +167,7 @@ class MainActivity : Activity() {
         val success = response.body()!!
         cityTextView.text = success.city +", "+ success.regionName
         fetchWeatherData(success.city)
+        getBackground()
       }
 
       override fun onFailure(
