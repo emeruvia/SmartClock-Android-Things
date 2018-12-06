@@ -53,8 +53,8 @@
 
     <ImageView
         android:id="@+id/weather_icon_imageview"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="68dp"
         app:layout_constraintBottom_toTopOf="@+id/weather_status_textview"
@@ -69,6 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:layout_marginTop="16dp"
         android:text="Cloudy"
         android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@+id/current_temp_textview"

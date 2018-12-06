@@ -1,6 +1,7 @@
 package fgcu.smartclock
 
 import android.app.Activity
+import android.graphics.drawable.Drawable
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.google.firebase.storage.StorageReference
 import com.hanks.htextview.fall.FallTextView
 import com.hanks.htextview.scale.ScaleTextView
 import com.squareup.picasso.Picasso
+import fgcu.smartclock.R.drawable
 import fgcu.smartclock.interfaces.RetrofitService
 import fgcu.smartclock.models.IPApiModel
 import fgcu.smartclock.models.WeatherModel
@@ -58,7 +60,6 @@ import java.util.TimeZone
  */
 class MainActivity : Activity() {
 
-
   private lateinit var hourTextView: TextView
   private lateinit var minuteTextview: TextView
   private lateinit var meridiemTextview: TextView
@@ -69,14 +70,13 @@ class MainActivity : Activity() {
   private lateinit var dateTextView: TextView
   private lateinit var cityTextView: TextView
   private lateinit var backgroundImageView: ImageView
-  private lateinit var storage : StorageReference
+  private lateinit var storage: StorageReference
   private var timeHandler = Handler()
   private var weatherHandler = Handler()
   private var firebaseHandler = Handler()
   private lateinit var time: Date
   private var hour = 0
   private var hourGMT = 0
-
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -92,27 +92,29 @@ class MainActivity : Activity() {
     dateTextView = findViewById(R.id.date_textview)
     cityTextView = findViewById(R.id.city_textview)
     backgroundImageView = findViewById(R.id.clock_background_imageview)
-    storage = FirebaseStorage.getInstance().reference
+    storage = FirebaseStorage.getInstance()
+        .reference
 
     manageTime()
     fetchIpData()
     Log.d("OnCreate", "Location :" + storage.child("fall_1_image.jpg").path)
   }
 
-  fun getBackground(){
+  fun getBackground() {
     var baseImageFileName = "image_"
     var imageFileCount = 1
     var fileTypeName = ".jpg"
 
     firebaseHandler.postDelayed(object : Runnable {
       override fun run() {
-        storage.child(baseImageFileName+imageFileCount%6+fileTypeName).
-            downloadUrl.addOnCompleteListener {
+        storage.child(baseImageFileName + imageFileCount % 6 + fileTypeName)
+            .downloadUrl.addOnCompleteListener {
           Picasso.get()
-              .load(it.result).centerCrop()
-              .resize(backgroundImageView.measuredWidth,backgroundImageView.measuredHeight)
+              .load(it.result)
+              .centerCrop()
+              .resize(backgroundImageView.measuredWidth, backgroundImageView.measuredHeight)
               .into(backgroundImageView)
-              imageFileCount++
+          imageFileCount++
         }
         weatherHandler.postDelayed(this, 30000)
       }
@@ -122,10 +124,11 @@ class MainActivity : Activity() {
   fun manageTime() {
     time = Calendar.getInstance()
         .time
-    hourGMT = SimpleDateFormat("HH").format(time).toInt()
-    hour =  if(hourGMT < 5) hourGMT + 19 else hourGMT - 5
-    minuteTextview.text =  SimpleDateFormat("mm").format(time)
-    var hourString: String = if(hour % 12 == 0 ) 12.toString() else (hour%12).toString()
+    hourGMT = SimpleDateFormat("HH").format(time)
+        .toInt()
+    hour = if (hourGMT < 5) hourGMT + 19 else hourGMT - 5
+    minuteTextview.text = SimpleDateFormat("mm").format(time)
+    var hourString: String = if (hour % 12 == 0) 12.toString() else (hour % 12).toString()
     hourTextView.text = (hourString)
     dateTextView.text = SimpleDateFormat("MM-dd-yyyy").format(time)
     meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
@@ -148,8 +151,8 @@ class MainActivity : Activity() {
       minuteTextview.text = (minute)
     }
     if (minute == ("00")) {
-      hour =  if(hourGMT < 5) hourGMT + 19 else hourGMT - 5
-      hourTextView.text = ((if(hour % 12 == 0 ) 12 else hour%12).toString())
+      hour = if (hourGMT < 5) hourGMT + 19 else hourGMT - 5
+      hourTextView.text = ((if (hour % 12 == 0) 12 else hour % 12).toString())
     }
     meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
     if (hour == 0)
@@ -165,9 +168,9 @@ class MainActivity : Activity() {
         call: Call<IPApiModel>,
         response: Response<IPApiModel>
       ) {
-        Log.d("FetchIP", "Got location from IP city: "+ response.body()!!.city)
+        Log.d("FetchIP", "Got location from IP city: " + response.body()!!.city)
         val success = response.body()!!
-        cityTextView.text = success.city +", "+ success.regionName
+        cityTextView.text = success.city + ", " + success.regionName
         fetchWeatherData(success.city)
         getBackground()
       }
@@ -201,6 +204,7 @@ class MainActivity : Activity() {
         call: Call<WeatherModel>,
         response: Response<WeatherModel>
       ) {
+        Log.d("Weather", response.body()!!.weatherCondition.get(0).weatherIcon)
         updateWeather(response)
         weatherHandler.postDelayed(object : Runnable {
           override fun run() {
@@ -214,8 +218,11 @@ class MainActivity : Activity() {
   }
 
   fun updateWeather(response: Response<WeatherModel>) {
+    var icon =
+        response.body()!!.weatherCondition.get(0).weatherIcon
+    println(icon)
     Picasso.get()
-        .load(response.body()!!.weatherCondition.get(0).weatherIcon)
+        .load(iconDrawable(icon))
         .into(weatherImageView)
     weatherStatusTextView.text = response.body()!!.weatherCondition.get(0)
         .weatherDescription
@@ -224,7 +231,27 @@ class MainActivity : Activity() {
     val highTemp = (response.body()!!.temperature.highTemperature - 273.15) * 1.8 + 32
     val lowTemp = (response.body()!!.temperature.lowTemperature - 273.15) * 1.8 + 32
 
-    currentTempTextView.text = String.format("Temp: %.1f F",currentTemp)
-    weatherRangeTextView.text = String.format("Hi: %.1f F\t\tLow: %.1f F",highTemp,lowTemp)
+    currentTempTextView.text = String.format("Temp: %.1f F", currentTemp)
+    weatherRangeTextView.text = String.format("Hi: %.1f F\t\tLow: %.1f F", highTemp, lowTemp)
+  }
+
+  fun iconDrawable(iconCondition: String): Int {
+    when(iconCondition) {
+      "01d" -> return drawable.clear_sky
+      "01n" -> return drawable.nt_clear_sky
+      "02d" -> return drawable.few_clouds
+      "02n" -> return drawable.nt_few_clouds
+      "03d" -> return drawable.cloudy
+      "03n" -> return drawable.cloudy
+      "04d" -> return drawable.broken_clouds
+      "04n" -> return drawable.nt_broken_clouds
+      "09d" -> return drawable.shower_rain
+      "09n" -> return drawable.shower_rain
+      "10d" -> return drawable.rain
+      "10n" -> return drawable.rain
+      "11d" -> return drawable.thunderstorm
+      "11n" -> return drawable.nt_thunderstorm
+    }
+    return drawable.unknown
   }
 }
