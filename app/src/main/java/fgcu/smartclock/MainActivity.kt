@@ -16,6 +16,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.hanks.htextview.fall.FallTextView
+import com.hanks.htextview.scale.ScaleTextView
 import com.squareup.picasso.Picasso
 import fgcu.smartclock.interfaces.RetrofitService
 import fgcu.smartclock.models.IPApiModel
@@ -58,8 +59,8 @@ import java.util.TimeZone
 class MainActivity : Activity() {
 
 
-  private lateinit var hourTextView: FallTextView
-  private lateinit var minuteTextview: FallTextView
+  private lateinit var hourTextView: TextView
+  private lateinit var minuteTextview: TextView
   private lateinit var meridiemTextview: TextView
   private lateinit var weatherImageView: ImageView
   private lateinit var weatherStatusTextView: TextView
@@ -123,8 +124,9 @@ class MainActivity : Activity() {
         .time
     hourGMT = SimpleDateFormat("HH").format(time).toInt()
     hour =  if(hourGMT < 5) hourGMT + 19 else hourGMT - 5
-    minuteTextview.animateText(SimpleDateFormat("mm").format(time))
-    hourTextView.animateText((if(hour % 12 == 0 ) 12 else hour%12).toString())
+    minuteTextview.text =  SimpleDateFormat("mm").format(time)
+    var hourString: String = if(hour % 12 == 0 ) 12.toString() else (hour%12).toString()
+    hourTextView.text = (hourString)
     dateTextView.text = SimpleDateFormat("MM-dd-yyyy").format(time)
     meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
     timeHandler.postDelayed(object : Runnable {
@@ -143,11 +145,11 @@ class MainActivity : Activity() {
     val seconds = SimpleDateFormat("ss").format(time)
     if (seconds == "00") {
       minute = SimpleDateFormat("mm").format(time)
-      minuteTextview.animateText(minute)
+      minuteTextview.text = (minute)
     }
     if (minute == ("00")) {
       hour =  if(hourGMT < 5) hourGMT + 19 else hourGMT - 5
-      hourTextView.animateText((if(hour % 12 == 0 ) 12 else hour%12).toString())
+      hourTextView.text = ((if(hour % 12 == 0 ) 12 else hour%12).toString())
     }
     meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
     if (hour == 0)

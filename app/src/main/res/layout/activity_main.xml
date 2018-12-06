@@ -105,7 +105,7 @@
 
     <TextView
         android:id="@+id/date_textview"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="November 20, 2018"
@@ -133,7 +133,7 @@
         app:layout_constraintTop_toBottomOf="@+id/time_background_imageview"
         />
 
-    <com.hanks.htextview.fall.FallTextView
+    <TextView
         android:id="@+id/hour_fallTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="12"
+        android:text="-"
         android:textSize="92sp"
         app:layout_constraintBottom_toTopOf="@+id/date_textview"
         app:layout_constraintEnd_toStartOf="@+id/colon_textview"
@@ -163,13 +163,13 @@
         app:layout_constraintTop_toTopOf="@+id/time_background_imageview"
         />
 
-    <com.hanks.htextview.fall.FallTextView
+    <TextView
         android:id="@+id/minute_fallTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="00"
+        android:text="-"
         android:textSize="92sp"
         app:layout_constraintBottom_toTopOf="@+id/date_textview"
         app:layout_constraintEnd_toStartOf="@+id/meridiem_textview"
