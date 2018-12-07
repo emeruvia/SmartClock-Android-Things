@@ -97,23 +97,22 @@ class MainActivity : Activity() {
 
     manageTime()
     fetchIpData()
-    Log.d("OnCreate", "Location :" + storage.child("fall_1_image.jpg").path)
+    Log.d("OnCreate", "Location :" + storage.child("image_0.jpg").path)
+    println(storage.bucket.length)
   }
 
   fun getBackground() {
     var baseImageFileName = "image_"
     var imageFileCount = 1
     var fileTypeName = ".jpg"
-
+    storage.child("image_0.jpg").downloadUrl.addOnCompleteListener{
+      setImage(it.result)
+    }
     firebaseHandler.postDelayed(object : Runnable {
       override fun run() {
-        storage.child(baseImageFileName + imageFileCount % 6 + fileTypeName)
+        storage.child(baseImageFileName + imageFileCount % 5 + fileTypeName)
             .downloadUrl.addOnCompleteListener {
-          Picasso.get()
-              .load(it.result)
-              .centerCrop()
-              .resize(backgroundImageView.measuredWidth, backgroundImageView.measuredHeight)
-              .into(backgroundImageView)
+          setImage(it.result)
           imageFileCount++
         }
         weatherHandler.postDelayed(this, 30000)
@@ -130,7 +129,7 @@ class MainActivity : Activity() {
     minuteTextview.text = SimpleDateFormat("mm").format(time)
     var hourString: String = if (hour % 12 == 0) 12.toString() else (hour % 12).toString()
     hourTextView.text = (hourString)
-    dateTextView.text = SimpleDateFormat("MM-dd-yyyy").format(time)
+//    dateTextView.text = SimpleDateFormat("MM-dd-yyyy").format(time)
     meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
     timeHandler.postDelayed(object : Runnable {
       override fun run() {
@@ -139,6 +138,14 @@ class MainActivity : Activity() {
       }
     }, 1000)
 
+  }
+
+  fun setImage(result: Uri?) {
+    Picasso.get()
+        .load(result)
+        .centerCrop()
+        .resize(backgroundImageView.measuredWidth, backgroundImageView.measuredHeight)
+        .into(backgroundImageView)
   }
 
   fun updateTime() {
