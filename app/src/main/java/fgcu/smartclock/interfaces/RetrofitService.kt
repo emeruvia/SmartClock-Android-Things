@@ -6,6 +6,9 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+/**
+ * Interface for Retrofit Services. It contains all the api endpoints
+ */
 interface RetrofitService {
   @GET("/json")
   fun ipApiService(): Call<IPApiModel>

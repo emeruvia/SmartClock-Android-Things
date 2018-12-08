@@ -3,6 +3,9 @@ package fgcu.smartclock.utils
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Default retrofit client. When initialized, URL needs to be passed as a parameter
+ */
 class RetrofitClient {
   private var retrofit: Retrofit? = null
 
