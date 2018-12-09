@@ -118,13 +118,13 @@ class MainActivity : Activity() {
     var fileTypeName = ".jpg"
     storage.child("image_0.jpg")
         .downloadUrl.addOnCompleteListener {
-      setImage(it.result)
+//      setImage(it.result)
     }
     firebaseHandler.postDelayed(object : Runnable {
       override fun run() {
         storage.child(baseImageFileName + imageFileCount % 7 + fileTypeName)
             .downloadUrl.addOnCompleteListener {
-          setImage(it.result)
+//          setImage(it.result)
           imageFileCount++
         }
         weatherHandler.postDelayed(this, 86400000)
@@ -139,12 +139,10 @@ class MainActivity : Activity() {
   fun manageTime() {
     time = Calendar.getInstance()
         .time
-    hourGMT = SimpleDateFormat("HH").format(time)
+    hourGMT = SimpleDateFormat("K").format(time)
         .toInt()
-    hour = if (hourGMT < 5) hourGMT + 19 else hourGMT - 5
     minuteTextview.text = SimpleDateFormat("mm").format(time)
-    var hourString: String = if (hour % 12 == 0) 12.toString() else (hour % 12).toString()
-    hourTextView.text = (hourString)
+    hourTextView.text = (hourGMT.toString())
     dateTextView.text = SimpleDateFormat("MM-dd-yyyy").format(time)
     meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
 
@@ -177,6 +175,7 @@ class MainActivity : Activity() {
   fun updateTime() {
     time = Calendar.getInstance()
         .time
+
     var minute = ""
     val seconds = SimpleDateFormat("ss").format(time)
     if (seconds == "00") {
@@ -184,7 +183,6 @@ class MainActivity : Activity() {
       minuteTextview.text = (minute)
     }
     if (minute == ("00")) {
-      hour = if (hourGMT < 5) hourGMT + 19 else hourGMT - 5
       hourTextView.text = ((if (hour % 12 == 0) 12 else hour % 12).toString())
     }
     meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
@@ -210,9 +208,15 @@ class MainActivity : Activity() {
       ) {
         Log.d("FetchIP", "Got location from IP city: " + response.body()!!.city)
         val success = response.body()!!
-        cityTextView.text = success.city + ", " + success.regionName
+//        cityTextView.text = success.city + ", " + success.regionName
         // call fetchWeatherData method with the location of the device
-        fetchWeatherData(success.city)
+        // Show connection error not found
+        Picasso.get()
+            .load(R.drawable.unknown)
+            .into(weatherImageView)
+        weatherStatusTextView.text = "Error connecting to network"
+        currentTempTextView.text = ""
+//        fetchWeatherData(success.city)
         // call method to get the background image
         getBackground()
       }
@@ -223,6 +227,13 @@ class MainActivity : Activity() {
         t: Throwable
       ) {
         Log.d("FetchIP", "Didn't get location from IP")
+        println(t.message)
+        // Show connection error not found
+        Picasso.get()
+            .load(R.drawable.unknown)
+            .into(weatherImageView)
+        weatherStatusTextView.text = "Error connecting to network"
+        currentTempTextView.text = ""
         call.enqueue(this)
       }
 
@@ -244,9 +255,14 @@ class MainActivity : Activity() {
         call: Call<WeatherModel>,
         t: Throwable
       ) {
+        println(t.message)
+        // Show connection error not found
+        Picasso.get()
+            .load(R.drawable.unknown)
+            .into(weatherImageView)
+        weatherStatusTextView.text = "Error connecting to network"
         call.enqueue(this)
         // console message showing why the callback failed to queue
-        println(t.message)
       }
 
       // method is ran whenever the API call was successful.
