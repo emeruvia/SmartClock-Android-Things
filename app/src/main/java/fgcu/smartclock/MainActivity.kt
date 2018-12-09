@@ -121,7 +121,7 @@ class MainActivity : Activity() {
           setImage(it.result)
           imageFileCount++
         }
-        weatherHandler.postDelayed(this, 86400000)
+        weatherHandler.postDelayed(this, 30000)
       }
     }, 86400000)
   }
@@ -131,10 +131,10 @@ class MainActivity : Activity() {
    * second.
    */
   fun manageTime() {
-    setTime()
+    updateTime()
     timeHandler.postDelayed(object : Runnable {
       override fun run() {
-        setTime()
+        updateTime()
         timeHandler.postDelayed(this, 1000)
       }
     }, 1000)
@@ -157,7 +157,7 @@ class MainActivity : Activity() {
   /**
    * Gets an instance calendar time and sets the time to every their respective textviews
    */
-  fun setTime() {
+  fun updateTime() {
     time = Calendar.getInstance()
         .time
     val hourGMT = SimpleDateFormat("K:mm aa", Locale.getDefault()).format(time)
