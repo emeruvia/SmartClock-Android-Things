@@ -69,7 +69,6 @@ class MainActivity : Activity() {
 
   // Date instance variable
   private lateinit var time: Date
-  //instance variables for calculating the time
 
   /**
    * onCreate method is the one in charge of running the first the app, similar to main. In this
@@ -135,7 +134,7 @@ class MainActivity : Activity() {
     setTime()
     timeHandler.postDelayed(object : Runnable {
       override fun run() {
-//        updateTime()
+        setTime()
         timeHandler.postDelayed(this, 1000)
       }
     }, 1000)
@@ -184,7 +183,7 @@ class MainActivity : Activity() {
       ) {
         Log.d("FetchIP", "Got location from IP city: " + response.body()!!.city)
         val success = response.body()!!
-//        cityTextView.text = success.city + ", " + success.regionName
+        cityTextView.text = success.city + ", " + success.regionName
         // call fetchWeatherData method with the location of the device
         fetchWeatherData(success.city)
         // call method to get the background image
