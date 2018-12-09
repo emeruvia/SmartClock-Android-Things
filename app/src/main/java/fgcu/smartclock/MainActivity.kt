@@ -23,6 +23,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 /**
  * Skeleton of an Android Things activity.
@@ -112,13 +113,13 @@ class MainActivity : Activity() {
     var fileTypeName = ".jpg"
     storage.child("image_0.jpg")
         .downloadUrl.addOnCompleteListener {
-      //      setImage(it.result)
+      setImage(it.result)
     }
     firebaseHandler.postDelayed(object : Runnable {
       override fun run() {
         storage.child(baseImageFileName + imageFileCount % 7 + fileTypeName)
             .downloadUrl.addOnCompleteListener {
-          //          setImage(it.result)
+          setImage(it.result)
           imageFileCount++
         }
         weatherHandler.postDelayed(this, 86400000)
@@ -160,9 +161,9 @@ class MainActivity : Activity() {
   fun setTime() {
     time = Calendar.getInstance()
         .time
-    var hourGMT = SimpleDateFormat("K:mm aa").format(time)
+    val hourGMT = SimpleDateFormat("K:mm aa", Locale.getDefault()).format(time)
     hourTextView.text = (hourGMT)
-    dateTextView.text = SimpleDateFormat("MMMM dd, yyyy").format(time)
+    dateTextView.text = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(time)
   }
 
   /**
@@ -185,13 +186,7 @@ class MainActivity : Activity() {
         val success = response.body()!!
 //        cityTextView.text = success.city + ", " + success.regionName
         // call fetchWeatherData method with the location of the device
-        // Show connection error not found
-        Picasso.get()
-            .load(R.drawable.unknown)
-            .into(weatherImageView)
-        weatherStatusTextView.text = "Error connecting to network"
-        currentTempTextView.text = ""
-//        fetchWeatherData(success.city)
+        fetchWeatherData(success.city)
         // call method to get the background image
         getBackground()
       }
@@ -231,13 +226,12 @@ class MainActivity : Activity() {
         t: Throwable
       ) {
         println(t.message)
-        // Show connection error not found
         Picasso.get()
             .load(R.drawable.unknown)
             .into(weatherImageView)
         weatherStatusTextView.text = "Error connecting to network"
+        // queue api call again
         call.enqueue(this)
-        // console message showing why the callback failed to queue
       }
 
       // method is ran whenever the API call was successful.
@@ -246,7 +240,9 @@ class MainActivity : Activity() {
         response: Response<WeatherModel>
       ) {
         // Log debug message containing the weather condition body
-        Log.d("Weather", response.body()!!.weatherCondition[0].weatherIcon)
+        Log.d("WeatherConnection", response.body()!!.weatherCondition.toString())
+        Log.d("WeatherConnection", response.body()!!.temperature.toString())
+        Log.d("WeatherConnection", response.body()!!.city.toString())
         // init update weather call
         updateWeather(response)
         // set up handler to fetch latest data every minute.
