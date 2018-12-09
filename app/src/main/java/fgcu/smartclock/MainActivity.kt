@@ -48,8 +48,6 @@ class MainActivity : Activity() {
 
   // instance variables for all the textviews and imageviews
   private lateinit var hourTextView: TextView
-  private lateinit var minuteTextview: TextView
-  private lateinit var meridiemTextview: TextView
   private lateinit var weatherStatusTextView: TextView
   private lateinit var currentTempTextView: TextView
   private lateinit var weatherRangeTextView: TextView
@@ -71,8 +69,6 @@ class MainActivity : Activity() {
   // Date instance variable
   private lateinit var time: Date
   //instance variables for calculating the time
-  private var hour = 0
-  private var hourGMT = 0
 
   /**
    * onCreate method is the one in charge of running the first the app, similar to main. In this
@@ -90,9 +86,7 @@ class MainActivity : Activity() {
 
     actionBar.hide()
 
-    hourTextView = findViewById(R.id.hour_fallTextView)
-    minuteTextview = findViewById(R.id.minute_fallTextView)
-    meridiemTextview = findViewById(R.id.meridiem_textview)
+    hourTextView = findViewById(R.id.hour_textview)
     weatherImageView = findViewById(R.id.weather_icon_imageview)
     weatherStatusTextView = findViewById(R.id.weather_status_textview)
     currentTempTextView = findViewById(R.id.current_temp_textview)
@@ -118,13 +112,13 @@ class MainActivity : Activity() {
     var fileTypeName = ".jpg"
     storage.child("image_0.jpg")
         .downloadUrl.addOnCompleteListener {
-//      setImage(it.result)
+      //      setImage(it.result)
     }
     firebaseHandler.postDelayed(object : Runnable {
       override fun run() {
         storage.child(baseImageFileName + imageFileCount % 7 + fileTypeName)
             .downloadUrl.addOnCompleteListener {
-//          setImage(it.result)
+          //          setImage(it.result)
           imageFileCount++
         }
         weatherHandler.postDelayed(this, 86400000)
@@ -137,19 +131,10 @@ class MainActivity : Activity() {
    * second.
    */
   fun manageTime() {
-    time = Calendar.getInstance()
-        .time
-    hourGMT = SimpleDateFormat("K").format(time)
-        .toInt()
-    minuteTextview.text = SimpleDateFormat("mm").format(time)
-    hourTextView.text = (hourGMT.toString())
-    dateTextView.text = SimpleDateFormat("MM-dd-yyyy").format(time)
-    meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
-
-    // time handler, it runs every second in order to update the view
+    setTime()
     timeHandler.postDelayed(object : Runnable {
       override fun run() {
-        updateTime()
+//        updateTime()
         timeHandler.postDelayed(this, 1000)
       }
     }, 1000)
@@ -172,22 +157,12 @@ class MainActivity : Activity() {
   /**
    * Gets an instance calendar time and sets the time to every their respective textviews
    */
-  fun updateTime() {
+  fun setTime() {
     time = Calendar.getInstance()
         .time
-
-    var minute = ""
-    val seconds = SimpleDateFormat("ss").format(time)
-    if (seconds == "00") {
-      minute = SimpleDateFormat("mm").format(time)
-      minuteTextview.text = (minute)
-    }
-    if (minute == ("00")) {
-      hourTextView.text = ((if (hour % 12 == 0) 12 else hour % 12).toString())
-    }
-    meridiemTextview.text = if (hour < 12) "a.m." else "p.m."
-    if (hour == 0)
-      dateTextView.text = SimpleDateFormat("MM-dd-yyyy").format(time)
+    var hourGMT = SimpleDateFormat("K:mm aa").format(time)
+    hourTextView.text = (hourGMT)
+    dateTextView.text = SimpleDateFormat("MMMM dd, yyyy").format(time)
   }
 
   /**

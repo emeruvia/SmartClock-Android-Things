@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
-        android:text="Cloudy"
+        android:text=""
         android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@+id/current_temp_textview"
         app:layout_constraintEnd_toEndOf="@+id/weather_background_imageview"
@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:textSize="28sp"
-        android:text="Temp: 76 F"
+        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/temp_range_textview"
         app:layout_constraintEnd_toEndOf="@+id/weather_background_imageview"
         app:layout_constraintHorizontal_bias="0.515"
@@ -104,19 +104,22 @@
         app:layout_constraintStart_toStartOf="@+id/weather_background_imageview"
         />
 
-    <TextView
-        android:id="@+id/date_textview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="12-06-2018"
-        android:textAlignment="center"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="@+id/time_background_imageview"
-        app:layout_constraintHorizontal_bias="0.285"
-        app:layout_constraintStart_toStartOf="@+id/time_background_imageview"
-        app:layout_constraintTop_toBottomOf="@+id/colon_textview"
-        />
+  <TextView
+      android:id="@+id/date_textview"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text=""
+      android:textAlignment="center"
+      android:layout_marginStart="50dp"
+      android:layout_marginEnd="50dp"
+      android:textSize="40sp"
+      app:layout_constraintEnd_toEndOf="@+id/time_background_imageview"
+      app:layout_constraintHorizontal_bias="0.285"
+      app:layout_constraintStart_toStartOf="@+id/time_background_imageview"
+      app:layout_constraintTop_toBottomOf="@id/hour_textview"
+      app:layout_constraintBottom_toBottomOf="@id/time_background_imageview"
+      tools:layout_editor_absoluteY="721dp"
+      />
 
     <TextView
         android:id="@+id/city_textview"
@@ -134,60 +137,21 @@
         app:layout_constraintTop_toBottomOf="@+id/time_background_imageview"
         />
 
-    <TextView
-        android:id="@+id/hour_fallTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="-"
-        android:textSize="92sp"
-        app:layout_constraintBottom_toTopOf="@+id/date_textview"
-        app:layout_constraintEnd_toStartOf="@+id/colon_textview"
-        app:layout_constraintHorizontal_bias="0.615"
-        app:layout_constraintStart_toStartOf="@+id/time_background_imageview"
-        app:layout_constraintTop_toTopOf="@+id/time_background_imageview"
-        app:layout_constraintVertical_bias="0.746"
-        />
-
-    <TextView
-        android:id="@+id/colon_textview"
-        android:layout_width="14dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="120dp"
-        android:text=":"
-        android:textSize="64sp"
-        app:layout_constraintEnd_toStartOf="@+id/minute_fallTextView"
-        app:layout_constraintTop_toTopOf="@+id/time_background_imageview"
-        />
-
-    <TextView
-        android:id="@+id/minute_fallTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:text="-"
-        android:textSize="92sp"
-        app:layout_constraintBottom_toTopOf="@+id/date_textview"
-        app:layout_constraintEnd_toStartOf="@+id/meridiem_textview"
-        app:layout_constraintTop_toTopOf="@+id/time_background_imageview"
-        app:layout_constraintVertical_bias="0.746"
-        />
-
-    <TextView
-        android:id="@+id/meridiem_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:layout_marginEnd="8dp"
-        android:text="a.m."
-        android:textSize="32sp"
-        app:layout_constraintBottom_toTopOf="@+id/date_textview"
-        app:layout_constraintEnd_toEndOf="@+id/time_background_imageview"
-        />
+  <TextView
+      android:id="@+id/hour_textview"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:layout_marginTop="70dp"
+      android:text="-"
+      android:textAlignment="center"
+      android:textSize="90sp"
+      app:layout_constraintBottom_toTopOf="@+id/date_textview"
+      app:layout_constraintEnd_toEndOf="@id/time_background_imageview"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="@id/time_background_imageview"
+      app:layout_constraintTop_toTopOf="@+id/time_background_imageview"
+      app:layout_constraintVertical_bias="0.746"
+      />
 
 </android.support.constraint.ConstraintLayout>
